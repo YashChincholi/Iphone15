@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import { chipImg, frameImg, frameVideo } from "../utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { animateWithGsap } from "../utils/animations";
+import { ScrollTrigger } from "gsap/all";
+gsap.registerPlugin(ScrollTrigger);
 
 const HowItWorks = () => {
   const videoRef = useRef();
@@ -19,7 +20,12 @@ const HowItWorks = () => {
       ease: "power2.inOut",
     });
 
-    animateWithGsap(".g_fadeIn", {
+    gsap.to(".g_fadeIn", {
+      scrollTrigger: {
+        trigger: ".g_fadeIn",
+        toggleActions: "restart none restart none",
+        start: "top 85%",
+      },
       opacity: 1,
       y: 0,
       duration: 1,
