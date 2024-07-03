@@ -60,50 +60,53 @@ const VideoCarousel = () => {
     const span = videoSpanRef.current;
 
     //   animate the progress bar
-    let anim = gsap.to(span[videoId], {
-      onUpdate: () => {
-        const progress = Math.ceil(anim.progress() * 100);
-        if (progress != currentProgress) {
-          currentProgress = progress;
+    if (span[videoId]) {
+      let anim = gsap.to(span[videoId], {
+        onUpdate: () => {
+          const progress = Math.ceil(anim.progress() * 100);
+          if (progress != currentProgress) {
+            currentProgress = progress;
 
-          gsap.to(videoDivRef.current[videoId], {
-            width:
-              window.innerWidth < 760
-                ? "10vw"
-                : window.innerWidth < 1200
-                ? "10vw"
-                : "4vw",
-          }),
-            gsap.to(span[videoId], {
-              width: `${currentProgress}%`,
-              backgroundColor: "white",
-            });
-        }
-      },
-      onComplete: () => {
-        if (isPlaying) {
-          gsap.to(videoDivRef.current[videoId], {
-            width: "12px",
-          }),
-            gsap.to(span[videoId], {
-              background: "#afafaf",
-            });
-        }
-      },
-    });
+            gsap.to(videoDivRef.current[videoId], {
+              width:
+                window.innerWidth < 760
+                  ? "10vw"
+                  : window.innerWidth < 1200
+                  ? "10vw"
+                  : "4vw",
+            }),
+              gsap.to(span[videoId], {
+                width: `${currentProgress}%`,
+                backgroundColor: "white",
+              });
+          }
+        },
+        onComplete: () => {
+          if (isPlaying) {
+            gsap.to(videoDivRef.current[videoId], {
+              width: "12px",
+            }),
+              gsap.to(span[videoId], {
+                background: "#afafaf",
+              });
+          }
+        },
+      });
 
-    if (videoId === 0) anim.restart();
+      if (videoId === 0) anim.restart();
 
-    const animUpdate = () => {
-      anim.progress(
-        videoRef.current[videoId].currentTime /
-          hightlightsSlides[videoId].videoDuration
-      );
-    };
+      const animUpdate = () => {
+        anim.progress(
+          videoRef.current[videoId].currentTime /
+            hightlightsSlides[videoId].videoDuration
+        );
+      };
 
-    if (isPlaying) gsap.ticker.add(animUpdate);
-    else gsap.ticker.remove(animUpdate);
+      if (isPlaying) gsap.ticker.add(animUpdate);
+      else gsap.ticker.remove(animUpdate);
+    }
   }, [startPlay, videoId, isPlaying]);
+
   const handelProcess = (type, i) => {
     switch (type) {
       case "video-end":
